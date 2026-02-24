@@ -9,8 +9,16 @@ export function NewEventPage() {
   const navigate = useNavigate();
 
   const today = new Date().toISOString().split('T')[0];
-  const [label, setLabel] = useState('');
+
+  function defaultLabel(dateStr: string): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    const day = new Date(y, m - 1, d).toLocaleDateString('en-US', { weekday: 'long' });
+    return day;
+  }
+
+  const [label, setLabel] = useState(() => defaultLabel(today));
   const [date, setDate] = useState(today);
+  const [labelTouched, setLabelTouched] = useState(false);
   const [selectedTeamIds, setSelectedTeamIds] = useState<Id[]>([]);
   const [pendingTeamName, setPendingTeamName] = useState<string | null>(null);
 
@@ -51,7 +59,7 @@ export function NewEventPage() {
           id="event-label"
           type="text"
           value={label}
-          onChange={(e) => setLabel(e.target.value)}
+          onChange={(e) => { setLabel(e.target.value); setLabelTouched(true); }}
           placeholder="e.g. Monday Training"
           className="form-input"
         />

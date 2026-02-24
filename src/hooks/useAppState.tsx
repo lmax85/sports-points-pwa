@@ -21,9 +21,14 @@ function reducer(state: AppState, action: Action): AppState {
         (t) => t.name.toLowerCase() === action.name.toLowerCase()
       );
       if (exists) return state;
+      const colorMatch: Record<string, string> = {
+        blue: '#1a73e8', red: '#d93025', pink: '#e91e8c',
+        green: '#1e8e3e', yellow: '#f9ab00', white: '#ffffff',
+      };
+      const color = colorMatch[action.name.toLowerCase()] || '#1a73e8';
       return {
         ...state,
-        teams: [...state.teams, { id: uuid(), name: action.name, color: '#1a73e8' }],
+        teams: [...state.teams, { id: uuid(), name: action.name, color }],
       };
     }
 

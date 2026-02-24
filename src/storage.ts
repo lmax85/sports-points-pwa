@@ -1,17 +1,37 @@
 import type { AppState } from './types';
 
 const STORAGE_KEY = 'sports-points-data';
-const CURRENT_VERSION = 3;
+const CURRENT_VERSION = 4;
 
 const DEFAULT_COLORS = ['#1a73e8', '#d93025', '#e91e8c', '#1e8e3e', '#f9ab00', '#ffffff'];
+
+const PRESET_TEAMS = [
+  { name: 'Blue', color: '#1a73e8' },
+  { name: 'Red', color: '#d93025' },
+  { name: 'Pink', color: '#e91e8c' },
+  { name: 'Green', color: '#1e8e3e' },
+  { name: 'Yellow', color: '#f9ab00' },
+  { name: 'White', color: '#ffffff' },
+];
 
 interface PersistedState {
   version: number;
   data: AppState;
 }
 
+function generateId(): string {
+  try {
+    return crypto.randomUUID();
+  } catch {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+    });
+  }
+}
+
 export const DEFAULT_STATE: AppState = {
-  teams: [],
+  teams: PRESET_TEAMS.map((t) => ({ id: generateId(), ...t })),
   events: [],
   pointValues: [1, 3],
   presetColors: DEFAULT_COLORS,
@@ -51,6 +71,15 @@ function migrate(persisted: PersistedState): AppState {
   // v2 -> v3: add preset colors
   if (persisted.version < 3) {
     data.presetColors = DEFAULT_COLORS;
+  }
+
+  // v3 -> v4: add preset teams (only ones that don't already exist by name)
+  if (persisted.version < 4) {
+    const existingNames = new Set(data.teams.map((t) => t.name.toLowerCase()));
+    const newTeams = PRESET_TEAMS
+      .filter((pt) => !existingNames.has(pt.name.toLowerCase()))
+      .map((pt) => ({ id: generateId(), ...pt }));
+    data.teams = [...data.teams, ...newTeams];
   }
 
   return data;
