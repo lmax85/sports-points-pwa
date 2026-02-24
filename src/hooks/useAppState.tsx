@@ -159,6 +159,9 @@ function reducer(state: AppState, action: Action): AppState {
       };
     }
 
+    case 'TOGGLE_AUTO_SORT':
+      return { ...state, autoSort: !state.autoSort };
+
     default:
       return state;
   }

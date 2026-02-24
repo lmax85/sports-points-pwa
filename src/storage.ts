@@ -1,7 +1,7 @@
 import type { AppState } from './types';
 
 const STORAGE_KEY = 'sports-points-data';
-const CURRENT_VERSION = 4;
+const CURRENT_VERSION = 5;
 
 const DEFAULT_COLORS = ['#1a73e8', '#d93025', '#e91e8c', '#1e8e3e', '#f9ab00', '#ffffff'];
 
@@ -35,6 +35,7 @@ export const DEFAULT_STATE: AppState = {
   events: [],
   pointValues: [1, 3],
   presetColors: DEFAULT_COLORS,
+  autoSort: false,
 };
 
 export function loadState(): AppState {
@@ -80,6 +81,11 @@ function migrate(persisted: PersistedState): AppState {
       .filter((pt) => !existingNames.has(pt.name.toLowerCase()))
       .map((pt) => ({ id: generateId(), ...pt }));
     data.teams = [...data.teams, ...newTeams];
+  }
+
+  // v4 -> v5: add autoSort preference
+  if (persisted.version < 5) {
+    data.autoSort = false;
   }
 
   return data;

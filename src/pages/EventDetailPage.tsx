@@ -140,9 +140,17 @@ export function EventDetailPage() {
     setPendingTeamName(name.toLowerCase());
   }
 
-  const teams = event.teamIds
+  const teamsInOrder = event.teamIds
     .map((tid) => state.teams.find((t) => t.id === tid))
     .filter(Boolean) as typeof state.teams;
+
+  const teams = state.autoSort
+    ? [...teamsInOrder].sort((a, b) => {
+        const totalA = event.entries.filter((e) => e.teamId === a.id).reduce((s, e) => s + e.points, 0);
+        const totalB = event.entries.filter((e) => e.teamId === b.id).reduce((s, e) => s + e.points, 0);
+        return totalB - totalA;
+      })
+    : teamsInOrder;
 
   return (
     <div className="page">
@@ -216,6 +224,18 @@ export function EventDetailPage() {
             ✕
           </button>
         </div>
+      </div>
+
+      <div className="auto-sort-row">
+        <label className="toggle-switch">
+          <input
+            type="checkbox"
+            checked={state.autoSort}
+            onChange={() => dispatch({ type: 'TOGGLE_AUTO_SORT' })}
+          />
+          <span className="toggle-slider" />
+        </label>
+        <span className="auto-sort-label">Auto sort</span>
       </div>
 
       <div className="table-wrapper">
