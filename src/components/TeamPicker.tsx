@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import type { Team, Id } from '../types';
+import { colorToEmoji } from '../colorEmoji';
 
 interface TeamPickerProps {
   teams: Team[];
@@ -44,8 +45,8 @@ export function TeamPicker({ teams, selectedTeamIds, onChange, onAddTeam }: Team
     <div className="team-picker">
       <div className="selected-teams">
         {selectedTeams.map((t) => (
-          <span key={t.id} className="team-chip" style={{ borderLeft: `3px solid ${t.color || '#1a73e8'}` }}>
-            {t.name}
+          <span key={t.id} className="team-chip">
+            {colorToEmoji(t.color || '#1a73e8')} {t.name}
             <button onClick={() => removeTeam(t.id)} className="chip-remove">&times;</button>
           </span>
         ))}
@@ -59,8 +60,7 @@ export function TeamPicker({ teams, selectedTeamIds, onChange, onAddTeam }: Team
               className="team-quick-btn"
               onClick={() => selectTeam(t.id)}
             >
-              <span className="team-dot" style={{ background: t.color || '#1a73e8' }} />
-              {t.name}
+              {colorToEmoji(t.color || '#1a73e8')} {t.name}
             </button>
           ))}
         </div>

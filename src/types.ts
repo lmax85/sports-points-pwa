@@ -26,7 +26,6 @@ export interface AppState {
   teams: Team[];
   events: SportEvent[];
   pointValues: number[];
-  presetColors: string[];
   autoSort: boolean;
 }
 
@@ -43,6 +42,4 @@ export type Action =
   | { type: 'UNDO_SCORE'; eventId: Id }
   | { type: 'ADD_POINT_VALUE'; value: number }
   | { type: 'REMOVE_POINT_VALUE'; value: number }
-  | { type: 'ADD_PRESET_COLOR'; color: string }
-  | { type: 'REMOVE_PRESET_COLOR'; color: string }
   | { type: 'TOGGLE_AUTO_SORT' };

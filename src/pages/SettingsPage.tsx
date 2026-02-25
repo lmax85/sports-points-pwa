@@ -1,58 +1,5 @@
-import { useRef, useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useAppState } from '../hooks/useAppState';
-
-function PresetColorsList() {
-  const { state, dispatch } = useAppState();
-  const pickerRef = useRef<HTMLInputElement>(null);
-
-  const handlePickerChange = useCallback(() => {
-    if (pickerRef.current) {
-      dispatch({ type: 'ADD_PRESET_COLOR', color: pickerRef.current.value });
-    }
-  }, [dispatch]);
-
-  const attachPicker = useCallback((el: HTMLInputElement | null) => {
-    // Detach from previous element
-    if (pickerRef.current) {
-      pickerRef.current.removeEventListener('change', handlePickerChange);
-    }
-    pickerRef.current = el;
-    // Attach native change event (fires only on close, unlike React's onChange)
-    if (el) {
-      el.addEventListener('change', handlePickerChange);
-    }
-  }, [handlePickerChange]);
-
-  return (
-    <div className="preset-colors-list">
-      {state.presetColors.map((color) => (
-        <div key={color} className="preset-color-item">
-          <span className="preset-color-swatch" style={{ background: color }} />
-          <button
-            className="btn-icon-sm btn-danger-sm"
-            onClick={() => dispatch({ type: 'REMOVE_PRESET_COLOR', color })}
-            disabled={state.presetColors.length <= 1}
-            title="Remove"
-          >
-            ✕
-          </button>
-        </div>
-      ))}
-      <button
-        className="preset-color-add"
-        onClick={() => pickerRef.current?.click()}
-        title="Add color"
-      >
-        +
-      </button>
-      <input
-        ref={attachPicker}
-        type="color"
-        className="color-native-input"
-      />
-    </div>
-  );
-}
 
 export function SettingsPage() {
   const { state, dispatch } = useAppState();
@@ -106,11 +53,6 @@ export function SettingsPage() {
           Add
         </button>
       </div>
-
-      <h3>Preset Colors</h3>
-      <p className="hint">Quick-pick colors shown in the team color picker.</p>
-
-      <PresetColorsList />
     </div>
   );
 }

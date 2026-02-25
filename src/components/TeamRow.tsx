@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Team, ScoreEntry } from '../types';
 import { PointButton } from './PointButton';
-import { useAppState } from '../hooks/useAppState';
+import { colorToEmoji } from '../colorEmoji';
+
+const PICKER_COLORS = ['#1a73e8', '#d93025', '#e91e8c', '#1e8e3e', '#f9ab00', '#ffffff'];
 
 interface TeamRowProps {
   team: Team;
@@ -14,7 +16,6 @@ interface TeamRowProps {
 }
 
 export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onRemove, onColorChange }: TeamRowProps) {
-  const { state } = useAppState();
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(team.name);
   const [colorOpen, setColorOpen] = useState(false);
@@ -54,7 +55,7 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
   }
 
   return (
-    <tr style={{ borderLeft: `4px solid ${team.color || '#1a73e8'}` }}>
+    <tr>
       <td className="team-name">
         {editing ? (
           <div className="team-edit-inline">
@@ -75,18 +76,19 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
             <div className="color-picker-wrapper">
               <button
                 ref={dotRef}
-                className="color-picker-dot"
-                style={{ background: team.color || '#1a73e8' }}
+                className="color-picker-dot color-picker-emoji"
                 onClick={openColorPicker}
                 title="Pick team color"
-              />
+              >
+                {colorToEmoji(team.color || '#1a73e8')}
+              </button>
               {colorOpen && (
                 <div
                   ref={colorRef}
                   className="color-picker-dropdown"
                   style={{ top: dropdownPos.top, left: dropdownPos.left }}
                 >
-                  {state.presetColors.map((c) => (
+                  {PICKER_COLORS.map((c) => (
                     <button
                       key={c}
                       className={`color-swatch ${(team.color || '#1a73e8') === c ? 'color-swatch--active' : ''}`}

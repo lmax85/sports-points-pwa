@@ -146,19 +146,6 @@ function reducer(state: AppState, action: Action): AppState {
       };
     }
 
-    case 'ADD_PRESET_COLOR': {
-      if (state.presetColors.includes(action.color)) return state;
-      return { ...state, presetColors: [...state.presetColors, action.color] };
-    }
-
-    case 'REMOVE_PRESET_COLOR': {
-      if (state.presetColors.length <= 1) return state;
-      return {
-        ...state,
-        presetColors: state.presetColors.filter((c) => c !== action.color),
-      };
-    }
-
     case 'TOGGLE_AUTO_SORT':
       return { ...state, autoSort: !state.autoSort };
 

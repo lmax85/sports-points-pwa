@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppState } from '../hooks/useAppState';
 import { TeamRow } from '../components/TeamRow';
+import { colorToEmoji } from '../colorEmoji';
 
 export function EventDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -74,6 +75,7 @@ export function EventDetailPage() {
     const teamTotals = teams
       .map((team) => ({
         name: team.name,
+        color: team.color || '#1a73e8',
         total: event!.entries
           .filter((e) => e.teamId === team.id)
           .reduce((sum, e) => sum + e.points, 0),
@@ -84,7 +86,7 @@ export function EventDetailPage() {
       `${event!.label || 'Untitled'}`,
       event!.date,
       '',
-      ...teamTotals.map((t) => `${t.name} — ${t.total} pts`),
+      ...teamTotals.map((t) => `${colorToEmoji(t.color)} ${t.name} — ${t.total} pts`),
     ];
     const text = lines.join('\n');
 
@@ -275,8 +277,7 @@ export function EventDetailPage() {
                 className="team-quick-btn"
                 onClick={() => handleSelectTeam(t.id)}
               >
-                <span className="team-dot" style={{ background: t.color || '#1a73e8' }} />
-                {t.name}
+                {colorToEmoji(t.color || '#1a73e8')} {t.name}
               </button>
             ))}
           </div>

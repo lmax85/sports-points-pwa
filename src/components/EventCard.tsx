@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { SportEvent, Team } from '../types';
+import { colorToEmoji } from '../colorEmoji';
 
 interface EventCardProps {
   event: SportEvent;
@@ -23,11 +24,7 @@ export function EventCard({ event, teams }: EventCardProps) {
         <span className="event-teams">
           {eventTeams.map((t) => (
             <span key={t.id} className="team-dot-label">
-              <span
-                className="team-dot"
-                style={{ background: t.color || '#1a73e8' }}
-              />
-              {t.name}
+              {colorToEmoji(t.color || '#1a73e8')} {t.name}
             </span>
           ))}
         </span>

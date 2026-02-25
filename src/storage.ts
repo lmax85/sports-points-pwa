@@ -1,9 +1,7 @@
 import type { AppState } from './types';
 
 const STORAGE_KEY = 'sports-points-data';
-const CURRENT_VERSION = 5;
-
-const DEFAULT_COLORS = ['#1a73e8', '#d93025', '#e91e8c', '#1e8e3e', '#f9ab00', '#ffffff'];
+const CURRENT_VERSION = 6;
 
 const PRESET_TEAMS = [
   { name: 'Blue', color: '#1a73e8' },
@@ -34,7 +32,6 @@ export const DEFAULT_STATE: AppState = {
   teams: PRESET_TEAMS.map((t) => ({ id: generateId(), ...t })),
   events: [],
   pointValues: [1, 3],
-  presetColors: DEFAULT_COLORS,
   autoSort: false,
 };
 
@@ -69,11 +66,6 @@ function migrate(persisted: PersistedState): AppState {
     }));
   }
 
-  // v2 -> v3: add preset colors
-  if (persisted.version < 3) {
-    data.presetColors = DEFAULT_COLORS;
-  }
-
   // v3 -> v4: add preset teams (only ones that don't already exist by name)
   if (persisted.version < 4) {
     const existingNames = new Set(data.teams.map((t) => t.name.toLowerCase()));
@@ -87,6 +79,10 @@ function migrate(persisted: PersistedState): AppState {
   if (persisted.version < 5) {
     data.autoSort = false;
   }
+
+  // v5 -> v6: remove presetColors
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  delete (data as any).presetColors;
 
   return data;
 }
