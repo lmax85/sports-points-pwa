@@ -766,6 +766,42 @@ h3 {
   margin-bottom: 16px;
 }
 
+/* iOS install guide */
+.ios-install-guide {
+  background: #e8f0fe;
+  border: 1px solid var(--primary);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.ios-install-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 10px;
+  color: var(--text);
+}
+
+.ios-install-steps {
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ios-install-steps strong {
+  color: var(--text);
+}
+
+.ios-icon {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: 700;
+}
+
 /* Responsive */
 @media (min-width: 600px) {
   .app-header {

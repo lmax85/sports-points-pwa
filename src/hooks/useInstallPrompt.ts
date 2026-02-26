@@ -5,16 +5,27 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+function getIsIOS(): boolean {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+}
+
+function getIsStandalone(): boolean {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    ('standalone' in navigator && (navigator as unknown as { standalone: boolean }).standalone);
+}
+
 export function useInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    // Check if already installed (standalone mode)
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-      return;
-    }
+    const standalone = getIsStandalone();
+    setIsInstalled(standalone);
+    setIsIOS(getIsIOS());
+
+    if (standalone) return;
 
     function handleBeforeInstall(e: Event) {
       e.preventDefault();
@@ -44,5 +55,7 @@ export function useInstallPrompt() {
     setDeferredPrompt(null);
   }
 
-  return { canInstall: !!deferredPrompt, isInstalled, promptInstall };
+  const showIOSGuide = isIOS && !isInstalled && !deferredPrompt;
+
+  return { canInstall: !!deferredPrompt, isInstalled, promptInstall, showIOSGuide };
 }

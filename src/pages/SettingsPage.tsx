@@ -5,7 +5,7 @@ import { useInstallPrompt } from '../hooks/useInstallPrompt';
 export function SettingsPage() {
   const { state, dispatch } = useAppState();
   const [newValue, setNewValue] = useState('');
-  const { canInstall, isInstalled, promptInstall } = useInstallPrompt();
+  const { canInstall, isInstalled, promptInstall, showIOSGuide } = useInstallPrompt();
 
   function handleAdd() {
     const num = parseInt(newValue, 10);
@@ -31,6 +31,17 @@ export function SettingsPage() {
           </svg>
           Add to Home Screen
         </button>
+      )}
+      {showIOSGuide && (
+        <div className="ios-install-guide">
+          <p className="ios-install-title">Install this app on your iPhone</p>
+          <ol className="ios-install-steps">
+            <li>Tap the <strong>three dots</strong> <span className="ios-icon">···</span> at the bottom right corner</li>
+            <li>Tap the <strong>Share</strong> button <svg className="ios-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></li>
+            <li>Scroll down and tap <strong>"Add to Home Screen"</strong></li>
+            <li>Tap <strong>"Add"</strong> to confirm</li>
+          </ol>
+        </div>
       )}
       {isInstalled && (
         <p className="install-note">App is installed on your device.</p>
