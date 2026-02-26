@@ -338,12 +338,21 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
 .event-header-info {
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+}
+
+.event-header-info h2,
+.event-header-info .event-label-editable {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .event-header h2 {
@@ -391,6 +400,7 @@ body {
 .event-actions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .auto-sort-row {
