@@ -16,6 +16,10 @@
   padding: 0;
 }
 
+html, body, #root {
+  height: 100%;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
@@ -72,11 +76,21 @@ body {
   font-size: 14px;
 }
 
+/* App shell */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
 /* Main */
 .app-main {
+  flex: 1;
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .page {
@@ -177,12 +191,19 @@ body {
 
 .form-input {
   width: 100%;
+  max-width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   font-size: 16px;
   background: var(--surface);
   color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="date"].form-input {
+  min-height: 44px;
 }
 
 .form-input:focus {
