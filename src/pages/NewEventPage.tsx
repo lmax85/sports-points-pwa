@@ -41,11 +41,9 @@ export function NewEventPage() {
   }, [state.teams, pendingTeamName, selectedTeamIds]);
 
   function handleCreate() {
-    dispatch({ type: 'CREATE_EVENT', label, date, teamIds: selectedTeamIds });
-    // Navigate to the new event — it'll be the first in the list
-    // We need the ID, which is generated in the reducer. Navigate to home instead,
-    // then the user taps to open. Or we navigate after state update.
-    navigate('/');
+    const id = crypto.randomUUID();
+    dispatch({ type: 'CREATE_EVENT', id, label, date, teamIds: selectedTeamIds });
+    navigate(`/event/${id}`);
   }
 
   return (

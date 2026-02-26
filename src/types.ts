@@ -33,7 +33,7 @@ export type Action =
   | { type: 'ADD_TEAM'; name: string }
   | { type: 'RENAME_TEAM'; teamId: Id; name: string }
   | { type: 'SET_TEAM_COLOR'; teamId: Id; color: string }
-  | { type: 'CREATE_EVENT'; label: string; date: string; teamIds: Id[] }
+  | { type: 'CREATE_EVENT'; id: Id; label: string; date: string; teamIds: Id[] }
   | { type: 'EDIT_EVENT'; eventId: Id; label: string; date: string }
   | { type: 'DELETE_EVENT'; eventId: Id }
   | { type: 'ADD_TEAM_TO_EVENT'; eventId: Id; teamId: Id }

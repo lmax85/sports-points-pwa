@@ -55,7 +55,7 @@ function reducer(state: AppState, action: Action): AppState {
 
     case 'CREATE_EVENT': {
       const event = {
-        id: uuid(),
+        id: action.id,
         label: action.label,
         date: action.date,
         teamIds: action.teamIds,
