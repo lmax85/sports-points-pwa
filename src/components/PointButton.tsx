@@ -1,4 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface PointButtonProps {
   value: number;
@@ -47,21 +48,26 @@ export function PointButton({ value, onClick }: PointButtonProps) {
   useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   return (
-    <button
-      className={`point-btn ${holding ? 'point-btn--holding' : ''}`}
-      onPointerDown={start}
-      onPointerUp={stop}
-      onPointerLeave={stop}
-      onPointerCancel={stop}
-      onContextMenu={(e) => e.preventDefault()}
-    >
-      {holding && (
-        <span
-          className="point-btn-fill"
-          style={{ transform: `scaleX(${progress})` }}
-        />
+    <>
+      <button
+        className={`point-btn ${holding ? 'point-btn--holding' : ''}`}
+        onPointerDown={start}
+        onPointerUp={stop}
+        onPointerLeave={stop}
+        onPointerCancel={stop}
+        onContextMenu={(e) => e.preventDefault()}
+      >
+        <span className="point-btn-label">+{value}</span>
+      </button>
+      {holding && createPortal(
+        <div className="hold-progress-bar">
+          <div
+            className="hold-progress-fill"
+            style={{ transform: `scaleX(${progress})` }}
+          />
+        </div>,
+        document.body
       )}
-      <span className="point-btn-label">+{value}</span>
-    </button>
+    </>
   );
 }

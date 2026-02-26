@@ -554,18 +554,26 @@ input[type="date"].form-input {
   background: #5f6368;
 }
 
-.point-btn-fill {
-  position: absolute;
-  inset: 0;
-  background: var(--primary);
-  transform-origin: left;
-  transform: scaleX(0);
-  pointer-events: none;
-}
-
 .point-btn-label {
   position: relative;
-  z-index: 1;
+}
+
+/* Hold progress bar — fixed at top of screen */
+.hold-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 20;
+}
+
+.hold-progress-fill {
+  height: 100%;
+  background: white;
+  transform-origin: left;
+  transform: scaleX(0);
 }
 
 /* Team color picker */
