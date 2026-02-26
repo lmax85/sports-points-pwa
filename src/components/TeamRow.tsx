@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Team, ScoreEntry } from '../types';
 import { PointButton } from './PointButton';
-import { colorToEmoji } from '../colorEmoji';
-
-const PICKER_COLORS = ['#1a73e8', '#d93025', '#e91e8c', '#1e8e3e', '#f9ab00', '#ffffff'];
+import { colorToEmoji, EMOJI_COLORS } from '../colorEmoji';
 
 interface TeamRowProps {
   team: Team;
@@ -22,7 +20,6 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
   const colorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLButtonElement>(null);
-  const nativePickerRef = useRef<HTMLInputElement>(null);
 
   function openColorPicker() {
     if (dotRef.current) {
@@ -36,8 +33,7 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
     if (!colorOpen) return;
     function handleClick(e: MouseEvent) {
       if (colorRef.current && !colorRef.current.contains(e.target as Node) &&
-          dotRef.current && !dotRef.current.contains(e.target as Node) &&
-          nativePickerRef.current !== e.target) {
+          dotRef.current && !dotRef.current.contains(e.target as Node)) {
         setColorOpen(false);
       }
     }
@@ -88,31 +84,17 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
                   className="color-picker-dropdown"
                   style={{ top: dropdownPos.top, left: dropdownPos.left }}
                 >
-                  {PICKER_COLORS.map((c) => (
+                  {EMOJI_COLORS.map(({ emoji, hex }) => (
                     <button
-                      key={c}
-                      className={`color-swatch ${(team.color || '#1a73e8') === c ? 'color-swatch--active' : ''}`}
-                      style={{ background: c }}
-                      onClick={() => { onColorChange(team.id, c); setColorOpen(false); }}
-                    />
+                      key={hex}
+                      className={`color-emoji-btn ${(team.color || '#1a73e8') === hex ? 'color-emoji-btn--active' : ''}`}
+                      onClick={() => { onColorChange(team.id, hex); setColorOpen(false); }}
+                    >
+                      {emoji}
+                    </button>
                   ))}
-                  <button
-                    className="color-swatch color-swatch--custom"
-                    onClick={() => { setColorOpen(false); nativePickerRef.current?.click(); }}
-                    title="Custom color"
-                  >
-                    +
-                  </button>
                 </div>
               )}
-              <input
-                ref={nativePickerRef}
-                type="color"
-                className="color-native-input"
-                value={team.color || '#1a73e8'}
-                onInput={(e) => onColorChange(team.id, (e.target as HTMLInputElement).value)}
-                onChange={(e) => onColorChange(team.id, e.target.value)}
-              />
             </div>
             <span
               className="team-name-text"
@@ -126,7 +108,10 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
               onClick={() => onRemove(team.id)}
               title="Remove from event"
             >
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
             </button>
           </div>
         )}

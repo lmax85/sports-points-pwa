@@ -1,3 +1,15 @@
+export const EMOJI_COLORS = [
+  { emoji: '🔵', hex: '#1a73e8' },
+  { emoji: '🔴', hex: '#d93025' },
+  { emoji: '🟣', hex: '#e91e8c' },
+  { emoji: '🟢', hex: '#1e8e3e' },
+  { emoji: '🟡', hex: '#f9ab00' },
+  { emoji: '⚪', hex: '#ffffff' },
+  { emoji: '🟠', hex: '#ff6d00' },
+  { emoji: '⚫', hex: '#000000' },
+  { emoji: '🟤', hex: '#795548' },
+];
+
 const EMOJI_MAP: [string, string, number, number, number][] = [
   ['🔵', '#1a73e8', 26, 115, 232],
   ['🔴', '#d93025', 217, 48, 37],
