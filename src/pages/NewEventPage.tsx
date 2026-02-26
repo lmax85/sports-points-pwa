@@ -18,7 +18,6 @@ export function NewEventPage() {
 
   const [label, setLabel] = useState(() => defaultLabel(today));
   const [date, setDate] = useState(today);
-  const [labelTouched, setLabelTouched] = useState(false);
   const [selectedTeamIds, setSelectedTeamIds] = useState<Id[]>([]);
   const [pendingTeamName, setPendingTeamName] = useState<string | null>(null);
 
@@ -59,7 +58,7 @@ export function NewEventPage() {
           id="event-label"
           type="text"
           value={label}
-          onChange={(e) => { setLabel(e.target.value); setLabelTouched(true); }}
+          onChange={(e) => setLabel(e.target.value)}
           placeholder="e.g. Monday Training"
           className="form-input"
         />

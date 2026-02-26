@@ -43,7 +43,13 @@ body {
   font-weight: 600;
 }
 
-.settings-link {
+.header-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-icon-link {
   color: white;
   text-decoration: none;
   font-size: 22px;

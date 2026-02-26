@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(xargs:*)",
+      "Bash(curl:*)",
+      "Bash(npx @playwright/mcp@latest --help:*)",
+      "mcp__playwright__browser_navigate",
+      "Bash(docker compose exec:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(bash:*)",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_press_key",
+      "mcp__playwright__browser_close",
+      "Bash(docker compose:*)",
+      "Bash(python3 -c:*)",
+      "mcp__playwright__browser_console_messages",
+      "Bash(gh pr view:*)",
+      "Bash(gh api:*)",
+      "Bash(npx eslint:*)",
+      "Bash(cd /Users/max/Code/core/laravel && npx tsc:*)",
+      "Bash(vendor/bin/pint:*)",
+      "Bash(php artisan tinker:*)",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_network_requests",
+      "Bash(find:*)",
+      "mcp__playwright__browser_run_code",
+      "mcp__playwright__browser_type",
+      "Bash(grep:*)",
+      "Bash(git checkout:*)"
+    ]
+  },
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    }
+  }
+}
