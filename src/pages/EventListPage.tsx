@@ -24,7 +24,7 @@ export function EventListPage() {
         </div>
       )}
 
-      <Link to="/new-event" className="fab">
+      <Link to="/new-event" className="fab fab-fixed">
         + New Event
       </Link>
     </div>
