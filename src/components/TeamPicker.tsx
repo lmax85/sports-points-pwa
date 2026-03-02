@@ -14,12 +14,11 @@ export function TeamPicker({ teams, selectedTeamIds, onChange, onAddTeam }: Team
 
   const selectedTeams = teams.filter((t) => selectedTeamIds.includes(t.id));
 
-  const availableTeams = useMemo(() => {
-    const unselected = teams.filter((t) => !selectedTeamIds.includes(t.id));
-    if (!query.trim()) return unselected;
+  const visibleTeams = useMemo(() => {
+    if (!query.trim()) return teams;
     const lower = query.toLowerCase();
-    return unselected.filter((t) => t.name.toLowerCase().includes(lower));
-  }, [query, teams, selectedTeamIds]);
+    return teams.filter((t) => t.name.toLowerCase().includes(lower));
+  }, [query, teams]);
 
   const exactMatch = teams.some(
     (t) => t.name.toLowerCase() === query.trim().toLowerCase()
@@ -28,6 +27,14 @@ export function TeamPicker({ teams, selectedTeamIds, onChange, onAddTeam }: Team
   function selectTeam(teamId: Id) {
     onChange([...selectedTeamIds, teamId]);
     setQuery('');
+  }
+
+  function toggleTeam(teamId: Id) {
+    if (selectedTeamIds.includes(teamId)) {
+      removeTeam(teamId);
+      return;
+    }
+    selectTeam(teamId);
   }
 
   function removeTeam(teamId: Id) {
@@ -52,17 +59,21 @@ export function TeamPicker({ teams, selectedTeamIds, onChange, onAddTeam }: Team
         ))}
       </div>
 
-      {availableTeams.length > 0 && (
+      {visibleTeams.length > 0 && (
         <div className="team-quick-list">
-          {availableTeams.map((t) => (
-            <button
+          {visibleTeams.map((t) => {
+            const isSelected = selectedTeamIds.includes(t.id);
+            return (
+              <button
               key={t.id}
               className="team-quick-btn"
-              onClick={() => selectTeam(t.id)}
+              onClick={() => toggleTeam(t.id)}
             >
+              {isSelected ? '✓ ' : ''}
               {colorToEmoji(t.color || '#1a73e8')} {t.name}
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       )}
 

@@ -24,6 +24,7 @@ function reducer(state: AppState, action: Action): AppState {
       const colorMatch: Record<string, string> = {
         blue: '#1a73e8', red: '#d93025', pink: '#e91e8c',
         green: '#1e8e3e', yellow: '#f9ab00', white: '#ffffff',
+        orange: '#ff6d00', black: '#000000', brown: '#795548',
       };
       const color = colorMatch[action.name.toLowerCase()] || '#1a73e8';
       return {
