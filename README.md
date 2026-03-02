@@ -4,6 +4,10 @@ A lightweight PWA for tracking team scores during sporting events. Create events
 
 Built with React, TypeScript, and Vite. Works offline with local storage persistence.
 
+## Example
+
+- https://sports-points-pwa.vercel.app/
+
 ## Screenshots
 
 | Events | Scoring | Settings |
