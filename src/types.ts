@@ -39,7 +39,7 @@ export type Action =
   | { type: 'ADD_TEAM_TO_EVENT'; eventId: Id; teamId: Id }
   | { type: 'REMOVE_TEAM_FROM_EVENT'; eventId: Id; teamId: Id }
   | { type: 'ADD_SCORE'; eventId: Id; teamId: Id; points: number }
-  | { type: 'UNDO_SCORE'; eventId: Id }
+  | { type: 'SET_TEAM_TOTAL'; eventId: Id; teamId: Id; total: number }
   | { type: 'ADD_POINT_VALUE'; value: number }
   | { type: 'REMOVE_POINT_VALUE'; value: number }
   | { type: 'TOGGLE_AUTO_SORT' };

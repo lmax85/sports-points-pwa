@@ -532,6 +532,32 @@ input[type="date"].form-input {
   color: var(--primary);
 }
 
+.total-value {
+  display: inline-block;
+  user-select: none;
+  cursor: default;
+  touch-action: none;
+  min-width: 44px;
+  min-height: 44px;
+  line-height: 44px;
+  text-align: center;
+}
+
+.total-value--holding {
+  opacity: 0.5;
+}
+
+.total-edit-input {
+  width: 60px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  padding: 4px;
+  color: var(--primary);
+}
+
 .point-btn {
   position: relative;
   overflow: hidden;

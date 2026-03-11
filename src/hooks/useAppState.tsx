@@ -123,15 +123,22 @@ function reducer(state: AppState, action: Action): AppState {
       };
     }
 
-    case 'UNDO_SCORE':
+    case 'SET_TEAM_TOTAL': {
+      const entry = {
+        id: uuid(),
+        teamId: action.teamId,
+        points: action.total,
+        timestamp: Date.now(),
+      };
       return {
         ...state,
         events: state.events.map((e) =>
           e.id === action.eventId
-            ? { ...e, entries: e.entries.slice(0, -1) }
+            ? { ...e, entries: [...e.entries.filter((en) => en.teamId !== action.teamId), entry] }
             : e
         ),
       };
+    }
 
     case 'ADD_POINT_VALUE': {
       if (state.pointValues.includes(action.value)) return state;

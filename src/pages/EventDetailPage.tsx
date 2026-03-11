@@ -60,8 +60,8 @@ export function EventDetailPage() {
     dispatch({ type: 'ADD_SCORE', eventId: event!.id, teamId, points });
   }
 
-  function handleUndo() {
-    dispatch({ type: 'UNDO_SCORE', eventId: event!.id });
+  function handleEditTotal(teamId: string, total: number) {
+    dispatch({ type: 'SET_TEAM_TOTAL', eventId: event!.id, teamId, total });
   }
 
   function handleDelete() {
@@ -221,17 +221,6 @@ export function EventDetailPage() {
             )}
           </button>
           <button
-            className="btn-icon"
-            onClick={handleUndo}
-            disabled={event.entries.length === 0}
-            title="Undo last"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="1 4 1 10 7 10"/>
-              <path d="M3.51 15a9 9 0 102.13-9.36L1 10"/>
-            </svg>
-          </button>
-          <button
             className="btn-icon btn-danger"
             onClick={handleDelete}
             title="Delete event"
@@ -278,6 +267,7 @@ export function EventDetailPage() {
                 onRename={handleRename}
                 onRemove={handleRemoveTeam}
                 onColorChange={handleColorChange}
+                onEditTotal={handleEditTotal}
               />
             ))}
           </tbody>

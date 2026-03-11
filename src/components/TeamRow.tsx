@@ -1,7 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import type { Team, ScoreEntry } from '../types';
 import { PointButton } from './PointButton';
 import { colorToEmoji, EMOJI_COLORS } from '../colorEmoji';
+
+const HOLD_DURATION = 500;
 
 interface TeamRowProps {
   team: Team;
@@ -11,15 +14,67 @@ interface TeamRowProps {
   onRename: (teamId: string, name: string) => void;
   onRemove: (teamId: string) => void;
   onColorChange: (teamId: string, color: string) => void;
+  onEditTotal: (teamId: string, total: number) => void;
 }
 
-export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onRemove, onColorChange }: TeamRowProps) {
+export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onRemove, onColorChange, onEditTotal }: TeamRowProps) {
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(team.name);
   const [colorOpen, setColorOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
   const colorRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLButtonElement>(null);
+
+  // Long-press to edit total
+  const [editingTotal, setEditingTotal] = useState(false);
+  const [editTotalValue, setEditTotalValue] = useState('');
+  const [holdProgress, setHoldProgress] = useState(0);
+  const [holdingTotal, setHoldingTotal] = useState(false);
+  const holdStartRef = useRef(0);
+  const holdRafRef = useRef(0);
+  const holdFiredRef = useRef(false);
+
+  const stopHold = useCallback(() => {
+    setHoldingTotal(false);
+    setHoldProgress(0);
+    cancelAnimationFrame(holdRafRef.current);
+  }, []);
+
+  const total = entries.reduce((sum, e) => sum + e.points, 0);
+
+  const tickHold = useCallback(() => {
+    const elapsed = Date.now() - holdStartRef.current;
+    const pct = Math.min(elapsed / HOLD_DURATION, 1);
+    setHoldProgress(pct);
+    if (pct >= 1) {
+      if (!holdFiredRef.current) {
+        holdFiredRef.current = true;
+        setEditTotalValue(String(total));
+        setEditingTotal(true);
+      }
+      stopHold();
+      return;
+    }
+    holdRafRef.current = requestAnimationFrame(tickHold);
+  }, [stopHold, total]);
+
+  function startHold() {
+    holdFiredRef.current = false;
+    holdStartRef.current = Date.now();
+    setHoldingTotal(true);
+    setHoldProgress(0);
+    holdRafRef.current = requestAnimationFrame(tickHold);
+  }
+
+  useEffect(() => () => cancelAnimationFrame(holdRafRef.current), []);
+
+  function handleSaveTotal() {
+    const num = parseInt(editTotalValue, 10);
+    if (!isNaN(num) && num !== total) {
+      onEditTotal(team.id, num);
+    }
+    setEditingTotal(false);
+  }
 
   function openColorPicker() {
     if (dotRef.current) {
@@ -40,7 +95,6 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
     document.addEventListener('pointerdown', handleClick);
     return () => document.removeEventListener('pointerdown', handleClick);
   }, [colorOpen]);
-  const total = entries.reduce((sum, e) => sum + e.points, 0);
 
   function handleSave() {
     const trimmed = editName.trim();
@@ -121,7 +175,42 @@ export function TeamRow({ team, entries, pointValues, onAddPoints, onRename, onR
           <PointButton value={pv} onClick={() => onAddPoints(team.id, pv)} />
         </td>
       ))}
-      <td className="total-cell">{total}</td>
+      <td className="total-cell">
+        {editingTotal ? (
+          <input
+            className="total-edit-input"
+            type="number"
+            value={editTotalValue}
+            onChange={(e) => setEditTotalValue(e.target.value)}
+            onBlur={handleSaveTotal}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') handleSaveTotal();
+              if (e.key === 'Escape') setEditingTotal(false);
+            }}
+            autoFocus
+          />
+        ) : (
+          <span
+            className={`total-value ${holdingTotal ? 'total-value--holding' : ''}`}
+            onPointerDown={startHold}
+            onPointerUp={stopHold}
+            onPointerLeave={stopHold}
+            onPointerCancel={stopHold}
+            onContextMenu={(e) => e.preventDefault()}
+          >
+            {total}
+          </span>
+        )}
+        {holdingTotal && createPortal(
+          <div className="hold-progress-bar">
+            <div
+              className="hold-progress-fill"
+              style={{ transform: `scaleX(${holdProgress})` }}
+            />
+          </div>,
+          document.body
+        )}
+      </td>
     </tr>
   );
 }
