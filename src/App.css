@@ -534,17 +534,11 @@ input[type="date"].form-input {
 
 .total-value {
   display: inline-block;
-  user-select: none;
-  cursor: default;
-  touch-action: none;
+  cursor: pointer;
   min-width: 44px;
   min-height: 44px;
   line-height: 44px;
   text-align: center;
-}
-
-.total-value--holding {
-  opacity: 0.5;
 }
 
 .total-edit-input {
