@@ -25,6 +25,22 @@ export default defineConfig({
           { src: '/icon-maskable-192.png', sizes: '192x192', type: 'image/png', purpose: 'maskable' },
           { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
+        screenshots: [
+          {
+            src: '/screenshot-narrow.png',
+            sizes: '1290x2796',
+            type: 'image/png',
+            form_factor: 'narrow',
+            label: 'Sports Points Tracker',
+          },
+          {
+            src: '/screenshot-wide.png',
+            sizes: '2796x1290',
+            type: 'image/png',
+            form_factor: 'wide',
+            label: 'Sports Points Tracker',
+          },
+        ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,ico,svg}'],
