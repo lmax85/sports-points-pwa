@@ -5,7 +5,7 @@ import { EventCard } from '../components/EventCard';
 
 export function EventListPage() {
   const { state } = useAppState();
-  const { canInstall, isInstalled, promptInstall, showIOSGuide } = useInstallPrompt();
+  const { canInstall, promptInstall, showIOSGuide } = useInstallPrompt();
 
   const sortedEvents = [...state.events].sort(
     (a, b) => b.createdAt - a.createdAt
@@ -34,10 +34,6 @@ export function EventListPage() {
           </ol>
         </div>
       )}
-      {isInstalled && (
-        <p className="install-note">App is installed on your device.</p>
-      )}
-
       {sortedEvents.length === 0 ? (
         <div className="empty-state">
           <p>No events yet.</p>
