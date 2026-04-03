@@ -88,24 +88,14 @@ export function EventDetailPage() {
       })
       .sort((a, b) => b.total - a.total);
 
-    const nameCol = Math.max(4, ...teamStats.map((t) => colorToEmoji(t.color).length + 1 + t.name.length));
-    const ptsCol = Math.max(3, ...teamStats.map((t) => String(t.total).length));
-
-    const header = `${'Team'.padEnd(nameCol)}  ${'Pts'.padStart(ptsCol)}  W  D`;
-    const separator = '─'.repeat(header.length);
-
-    const rows = teamStats.map((t) => {
-      const label = `${colorToEmoji(t.color)} ${t.name}`.padEnd(nameCol);
-      const pts = String(t.total).padStart(ptsCol);
-      return `${label}  ${pts}  ${t.wins}  ${t.draws}`;
-    });
+    const rows = teamStats.map((t) =>
+      `${colorToEmoji(t.color)} ${t.name} — ${t.total}pts ${t.wins}W ${t.draws}D`
+    );
 
     const lines = [
       `${event!.label || 'Untitled'}`,
       event!.date,
       '',
-      header,
-      separator,
       ...rows,
     ];
     const text = lines.join('\n');
